@@ -376,7 +376,7 @@ public class MainActivity extends Activity {
         card.setPadding(Ui.dp(c, 26), Ui.dp(c, 18), Ui.dp(c, 26), Ui.dp(c, 18));
         LinearLayout now = new LinearLayout(c);
         now.setOrientation(LinearLayout.VERTICAL);
-        wCity = Ui.label(c, City.chosen(c) ? City.name(c) : City.name(c) + " · ОК — выбрать город");
+        wCity = Ui.label(c, City.chosen(c) ? City.name(c) : City.name(c) + " · ОК: город");
         now.addView(wCity);
         wTemp = Ui.text(c, "…", 36, Ui.TEXT, "unbounded", 500);
         wDesc = Ui.text(c, "", 15, Ui.TEXT, "golos", 400);

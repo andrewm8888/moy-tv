@@ -166,9 +166,14 @@ final class Backdrop {
                 BitmapFactory.Options o = new BitmapFactory.Options();
                 o.inPreferredConfig = Bitmap.Config.RGB_565;
                 InputStream in = c.getAssets().open("bg/" + files.get(v));
+                o.inMutable = true;
                 Bitmap b = BitmapFactory.decodeStream(in, null, o);
                 in.close();
-                if (b != null) return b;
+                if (b != null) {
+                    // приглушаем фото на 28 %, чтобы часы, курсы и подписи не терялись
+                    new Canvas(b).drawColor(0x47000000);
+                    return b;
+                }
             } catch (Exception ignored) { }
         }
         Bitmap b = Bitmap.createBitmap(16, 9, Bitmap.Config.RGB_565);

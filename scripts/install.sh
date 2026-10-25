@@ -11,6 +11,10 @@ if [ -z "$APK" ]; then
   curl -L --fail -o "$APK" "$APK_URL" || { echo "Не скачалось: $APK_URL"; exit 1; }
 fi
 echo "=== Установка ==="
+# Заглушка: на время установки гасим подсветку, чтобы на экране не мелькало фоновое приложение
+BL=$($A shell settings get global picture_backlight | tr -d '\r'); case "$BL" in ''|null|0) BL=100;; esac
+$A shell settings put global picture_backlight 0
+trap '$A shell settings put global picture_backlight $BL' EXIT
 $A install -r "$APK" || { echo "Установка не удалась. Если раньше стояла версия с другой подписью: $ADB -s $IP:5555 uninstall $PKG"; exit 1; }
 echo "=== Права ==="
 $A shell pm grant $PKG android.permission.WRITE_SECURE_SETTINGS
@@ -26,6 +30,7 @@ if [ -z "$CUR" ] || [ "$CUR" = "null" ]; then NEW="$SVC"; elif echo "$CUR" | gre
 $A shell settings put secure enabled_accessibility_services "$NEW"
 $A shell settings put secure accessibility_enabled 1
 $A shell am start -n $PKG/.MainActivity >/dev/null
+sleep 3; $A shell settings put global picture_backlight $BL
 echo
 echo "ГОТОВО. Нажмите HOME на пульте."
 echo "Город для погоды: ОК на карточке погоды → «Сменить город»."

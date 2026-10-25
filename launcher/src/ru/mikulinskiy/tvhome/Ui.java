@@ -27,9 +27,9 @@ final class Ui {
     static final int TEXT_DIM = 0xFF8792A3;
     static final int ACCENT = 0xFFE7A35F;   // оранжевый
     static final int ICE = 0xFF9CC3E6;      // ледяной голубой
-    static final int HAIR = 0x2E9CC3E6;     // тонкая рамка
-    static final int TILE = 0x0FFFFFFF;
-    static final int TILE_FOCUS = 0x24E7A35F;
+    static final int HAIR = 0x4D9CC3E6;     // тонкая рамка
+    static final int TILE = 0x8C0B0F16;       // тёмная подложка 55 %: фото видно, текст читается
+    static final int TILE_FOCUS = 0xB8231A12; // в фокусе темнее (72 %) и теплее
     static final int UP = 0xFF7ED3A6;
     static final int DOWN = 0xFFF08C8C;
 
@@ -69,6 +69,8 @@ final class Ui {
         t.setTextColor(color);
         t.setIncludeFontPadding(false);
         t.setTypeface(font(c, font, weight));
+        // мягкая тень: текст читается на светлых фотографиях
+        t.setShadowLayer(dp(c, 5), 0, dp(c, 1), 0xB3000000);
         return t;
     }
 
