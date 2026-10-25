@@ -758,7 +758,18 @@ public class MainActivity extends Activity {
         box.addView(chipRow(c, all, g2, grp, new Ui.OnPick() {
             @Override public void pick(int w) { Backdrop.setGroup(c, Backdrop.GROUPS[4 + w][0]); bgApply(6 + w); }
         }));
-        // ряд 4: прочее
+        // ряд 4: тень на фото
+        box.addView(Ui.label(c, "Тень"));
+        final int shNow = Backdrop.shade(c);
+        String[] shL = new String[Backdrop.SHADES.length];
+        for (int i = 0; i < shL.length; i++) shL[i] = Backdrop.SHADES[i] + " %";
+        LinearLayout shRow = chipRow(c, all, shL, null, new Ui.OnPick() {
+            @Override public void pick(int w) { Backdrop.setShade(c, Backdrop.SHADES[w]); bgApply(9 + w); }
+        });
+        for (int i = 0; i < Backdrop.SHADES.length; i++)
+            if (Backdrop.SHADES[i] == shNow) ((TextView) shRow.getChildAt(i)).setTextColor(Ui.ACCENT);
+        box.addView(shRow);
+        // ряд 5: прочее
         final int hid = Backdrop.hiddenCount(c);
         String[] r4 = hid > 0
                 ? new String[]{daily ? "Закрепить этот" : "Каждый день", "Убрать этот", "Тёмный", "Вернуть " + hid}
@@ -769,7 +780,7 @@ public class MainActivity extends Activity {
                 if (w == 1) Backdrop.hide(c, cur);
                 if (w == 2) Backdrop.fix(c, Backdrop.DARK);
                 if (w == 3) Backdrop.unhideAll(c);
-                bgApply(9 + w);
+                bgApply(12 + w);
             }
         });
         row4.setPadding(0, Ui.dp(c, 10), 0, 0);

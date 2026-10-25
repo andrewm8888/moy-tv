@@ -148,6 +148,12 @@ final class Backdrop {
 
     static void unhideAll(Context c) { p(c).edit().remove("bg_hidden").apply(); }
 
+    static final int[] SHADES = {0, 15, 28};
+
+    /** Тень на фото в процентах, по умолчанию 28. */
+    static int shade(Context c) { return p(c).getInt("bg_shade", 28); }
+    static void setShade(Context c, int pct) { p(c).edit().putInt("bg_shade", pct).apply(); }
+
     static int hiddenCount(Context c) { return hidden(c).size(); }
 
     static String name(Context c, int v) {
@@ -170,8 +176,9 @@ final class Backdrop {
                 Bitmap b = BitmapFactory.decodeStream(in, null, o);
                 in.close();
                 if (b != null) {
-                    // приглушаем фото на 28 %, чтобы часы, курсы и подписи не терялись
-                    new Canvas(b).drawColor(0x47000000);
+                    // «Тень»: приглушаем фото (0, 15 или 28 %), чтобы часы, курсы и подписи не терялись
+                    int sh = shade(c);
+                    if (sh > 0) new Canvas(b).drawColor(Math.round(sh * 255f / 100f) << 24);
                     return b;
                 }
             } catch (Exception ignored) { }
